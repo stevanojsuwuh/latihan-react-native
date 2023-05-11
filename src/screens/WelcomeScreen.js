@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import GLOBALS from "../Global";
 
-const WelcomeScreen = (props) => {
+const WelcomeScreen = ({ navigation }) => {
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>LearnIt</Text>
@@ -23,7 +24,7 @@ const WelcomeScreen = (props) => {
       <View style={styles.buttonView}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => onNavigateLogin(props.onNavigate)}
+          onPress={() => onNavigateLogin(navigation)}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -35,7 +36,8 @@ const WelcomeScreen = (props) => {
   );
 };
 
-const onNavigateLogin = (onNavigate) => onNavigate(GLOBALS.SCREEN.LOGIN);
+const onNavigateLogin = (onNavigate) =>
+  onNavigate.replace(GLOBALS.SCREEN.LOGIN);
 
 const styles = StyleSheet.create({
   container: {
@@ -64,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen
+export default WelcomeScreen;

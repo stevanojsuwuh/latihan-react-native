@@ -5,7 +5,6 @@ import {
   View,
   FlatList,
   Text,
-  Modal,
   TouchableOpacity,
 } from "react-native";
 
@@ -42,44 +41,11 @@ const MATERIAL_SUBJECT = [
   },
 ];
 
-
-const MaterialInfoModal = ({ info, setVisible, isVisible }) => (
-  <Modal
-    animationType="slide"
-    transparent={true}
-    visible={isVisible}
-    onRequestClose={() => {
-      Alert.alert("Modal has been closed.");
-      setVisible(!isVisible);
-    }}
-  >
-    <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-        <Text style={styles.itemTitleText}>{info.title}</Text>
-        <Text style={styles.itemDescriptionText}>{info.description}</Text>
-        <Text style={styles.itemDescriptionText}>
-          <Text style={{ fontWeight: "bold" }}>Duration: </Text>
-          {info.duration}
-        </Text>
-        <View style={{ height: 15 }}></View>
-        <TouchableOpacity
-          style={{ alignSelf: "center" }}
-          onPress={() => {
-            setVisible(!isVisible);
-          }}
-        >
-          <Text style={styles.itemDescriptionText}>Close</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </Modal>
-);
-
-
-const MaterialItem = ({ info, onSetModalInfo, onSetModalVisible }) => {
+const MaterialItem = ({ info, modalNavigation }) => {
   const onShowModal = () => {
-    onSetModalInfo(info);
-    onSetModalVisible(true);
+    modalNavigation.navigate("MaterialInfoModal", {
+      itemInfo: info,
+    });
   };
   return (
     <View style={styles.item}>
@@ -91,26 +57,14 @@ const MaterialItem = ({ info, onSetModalInfo, onSetModalVisible }) => {
   );
 };
 
-
-const MaterialScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalInfo, setModalInfo] = useState({});
+const MaterialScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <MaterialInfoModal
-        info={modalInfo}
-        setVisible={setModalVisible}
-        isVisible={modalVisible}
-      />
       <View>
         <FlatList
           data={MATERIAL_SUBJECT}
           renderItem={({ item }) => (
-            <MaterialItem
-              info={item}
-              onSetModalInfo={setModalInfo}
-              onSetModalVisible={setModalVisible}
-            />
+            <MaterialItem info={item} modalNavigation={navigation} />
           )}
           keyExtractor={(item) => item.id}
         />
@@ -119,11 +73,11 @@ const MaterialScreen = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#4169E1",
+    paddingTop: 36,
   },
   item: {
     backgroundColor: "#FCBF49",
