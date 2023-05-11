@@ -7,22 +7,42 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { LoginBlock } from "./LoginBLock";
 
-const LoginScreen = () => {
+const LoginScreen = (props) => {
+
+  const {
+    userName,
+    password,
+    handlePasswordChange,
+    handleUserNameChange,
+    onAuthenticate
+  } = LoginBlock()
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>User Name</Text>
-        <TextInput style={styles.input}></TextInput>
+        <TextInput style={styles.input}
+          onChangeText={handleUserNameChange}
+          value={userName}
+        />
         <Text style={styles.title}>Password</Text>
-        <TextInput style={styles.input} secureTextEntry={true}></TextInput>
-        <TouchableOpacity style={styles.button}>
+        <TextInput style={styles.input}     secureTextEntry={true}
+          onChangeText={handlePasswordChange}
+          value={password}
+        />
+        <TouchableOpacity style={styles.button}
+          onPress={() => onAuthenticate(userName, password, props.onNavigate)}
+        >
           <Text>Login</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
+
+
 
 
 const styles = StyleSheet.create({
